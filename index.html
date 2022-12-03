@@ -2,16 +2,22 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
-    <title>Pac-Man Game</title>
+    <title>PacMan Game</title>
     <link rel="stylesheet" href="style.css"/>
-    <script src="game.js"></script>
+    <script src="pacman.js"></script>
+    <script src="modernizr.js"></script>
 </head>
 
 <body>
-<h1>Pac-Man Game</h1>
+
+<div id="shim">shim for font face</div>
+
+<h1>PacMan Game</h1>
+
 <div id="pacman"></div>
+
 <script>
-    const el = document.getElementById("pacman");
+    var el = document.getElementById("pacman");
 
     if (Modernizr.canvas && Modernizr.localstorage &&
         Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
@@ -23,5 +29,6 @@
             "(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
     }
 </script>
+
 </body>
 </html>
