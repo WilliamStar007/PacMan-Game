@@ -9,6 +9,7 @@
  * Featuring major contributions by
  * Paul Irish  - http://paulirish.com
  */
+
 window.Modernizr = function (i, e, I) {
     function C(a, b) {
         for (var c in a) if (m[a[c]] !== I && (!b || b(a[c], D))) return true
@@ -206,7 +207,7 @@ window.Modernizr = function (i, e, I) {
     d.video = function () {
         var a = e.createElement("video"), b = !!a.canPlayType;
         if (b) {
-            b = Boolean(b);
+            b = new Boolean(b);
             b.ogg = a.canPlayType('video/ogg; codecs="theora"');
             b.h264 = a.canPlayType('video/mp4; codecs="avc1.42E01E"');
             b.webm = a.canPlayType('video/webm; codecs="vp8, vorbis"')
@@ -216,7 +217,7 @@ window.Modernizr = function (i, e, I) {
     d.audio = function () {
         var a = e.createElement("audio"), b = !!a.canPlayType;
         if (b) {
-            b = Boolean(b);
+            b = new Boolean(b);
             b.ogg = a.canPlayType('audio/ogg; codecs="vorbis"');
             b.mp3 = a.canPlayType("audio/mpeg;");
             b.wav = a.canPlayType('audio/wav; codecs="1"');
