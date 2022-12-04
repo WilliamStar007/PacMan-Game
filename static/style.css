@@ -1,0 +1,19 @@
+#pacman {
+  height: 470px;
+  width: 382px;
+  border-radius: 5px;
+  margin: 20px auto;
+}
+
+h1 {
+  font-family: 'Permanent Marker', cursive;
+  text-align: center;
+  color: yellow;
+}
+
+body {
+  width: auto;
+  margin: auto;
+  font-family: sans-serif;
+  background-color: black;
+}
