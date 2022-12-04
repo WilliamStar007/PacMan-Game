@@ -143,7 +143,8 @@ window.Modernizr = function (i, e, I) {
         return r("boxReflect")
     };
     d.csstransforms = function () {
-        return !!C(["transformProperty", "WebkitTransform", "MozTransform", "OTransform", "msTransform"])
+        return !!C(["transformProperty",
+            "WebkitTransform", "MozTransform", "OTransform", "msTransform"])
     };
     d.csstransforms3d = function () {
         var a = !!C(["perspectiveProperty", "WebkitPerspective", "MozPerspective", "OPerspective", "msPerspective"]);
@@ -182,7 +183,8 @@ window.Modernizr = function (i, e, I) {
             var v = function () {
                 if (g.parentNode) {
                     a = j.fontface = h !== c.offsetWidth * c.offsetHeight;
-                    s.className = s.className.replace(/(no-)?fontface\b/, "") + (a ? " " : " no-") + "fontface"
+                    s.className = s.className.replace(/(no-)?fontface\b/, "") +
+                        (a ? " " : " no-") + "fontface"
                 }
             };
             setTimeout(v, 75);
@@ -205,7 +207,7 @@ window.Modernizr = function (i, e, I) {
     d.video = function () {
         var a = e.createElement("video"), b = !!a.canPlayType;
         if (b) {
-            b = Boolean(b);
+            b = new Boolean(b);
             b.ogg = a.canPlayType('video/ogg; codecs="theora"');
             b.h264 = a.canPlayType('video/mp4; codecs="avc1.42E01E"');
             b.webm = a.canPlayType('video/webm; codecs="vp8, vorbis"')
@@ -215,7 +217,7 @@ window.Modernizr = function (i, e, I) {
     d.audio = function () {
         var a = e.createElement("audio"), b = !!a.canPlayType;
         if (b) {
-            b = Boolean(b);
+            b = new Boolean(b);
             b.ogg = a.canPlayType('audio/ogg; codecs="vorbis"');
             b.mp3 = a.canPlayType("audio/mpeg;");
             b.wav = a.canPlayType('audio/wav; codecs="1"');
