@@ -21,7 +21,7 @@ var NONE = 4,
     DYING = 10,
     Pacman = {};
 
-Pacman.FPS = 30;
+Pacman.FPS = 20;
 
 Pacman.Ghost = function (game, map, colour) {
 
@@ -287,10 +287,17 @@ Pacman.User = function (game, map) {
         score = 5,
         keyMap = {};
 
+    // arrow key support
     keyMap[KEY.ARROW_LEFT] = LEFT;
     keyMap[KEY.ARROW_UP] = UP;
     keyMap[KEY.ARROW_RIGHT] = RIGHT;
     keyMap[KEY.ARROW_DOWN] = DOWN;
+
+    // WASD key support
+    keyMap[KEY.A] = LEFT;
+    keyMap[KEY.W] = UP;
+    keyMap[KEY.D] = RIGHT;
+    keyMap[KEY.S] = DOWN;
 
     function addScore(nScore) {
         score += nScore;
@@ -300,7 +307,7 @@ Pacman.User = function (game, map) {
     }
 
     function theScore() {
-        return score;
+        return parseInt(score);
     }
 
     function resetScore() {
@@ -402,8 +409,7 @@ Pacman.User = function (game, map) {
             npos = getNewCoord(due, position);
 
             if (isOnSamePlane(due, direction) ||
-                (onGridSquare(position) &&
-                    map.isFloorSpace(next(npos, due)))) {
+                (onGridSquare(position) && map.isFloorSpace(next(npos, due)))) {
                 direction = due;
             } else {
                 npos = null;
@@ -435,11 +441,17 @@ Pacman.User = function (game, map) {
 
         block = map.block(nextWhole);
 
+        // minus one for every step taken
+        if (Pacman.MODE === "test") addScore(-1/5);
+
         if ((isMidSquare(position.y) || isMidSquare(position.x)) &&
             block === Pacman.BISCUIT || block === Pacman.PILL) {
 
             map.setBlock(nextWhole, Pacman.EMPTY);
-            addScore((block === Pacman.BISCUIT) ? 10 : 50);
+
+            // plus five for every biscuit eaten
+            if (Pacman.MODE === "test") addScore(5);
+            else addScore((block === Pacman.BISCUIT) ? 10 : 50);
             eaten += 1;
 
             if (eaten === Pacman.WIN) {
@@ -1045,8 +1057,7 @@ var PACMAN = (function () {
 
     function init(wrapper, root, mode) {
         // set test modes for the game
-        const test_modes = ["simple", "full"]
-        if (mode in test_modes) testMode(mode)
+        if (mode !== null) testMode(mode)
 
         var i, len, ghost,
             blockSize = wrapper.offsetWidth / 19,
@@ -1066,7 +1077,7 @@ var PACMAN = (function () {
             "eatenPill": eatenPill
         }, map);
 
-        if (!(mode in test_modes)) {
+        if (mode === null) {
             for (i = 0, len = ghostSpecs.length; i < len; i += 1) {
                 ghost = new Pacman.Ghost({"getTick": getTick}, map, ghostSpecs[i]);
                 ghosts.push(ghost);
@@ -1250,7 +1261,7 @@ function testMode(testMode) {
         ];
     }
     else if (testMode === "full") {
-        Pacman.WIN = 195;
+        Pacman.WIN = 193;
         Pacman.MAP = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0],
@@ -1262,7 +1273,7 @@ function testMode(testMode) {
             [0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0],
             [2, 2, 2, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2],
             [0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0],
-            [1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1],
+            [0, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
             [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
             [2, 2, 2, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 2, 2, 2],
             [0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
