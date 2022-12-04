@@ -21,7 +21,7 @@ var NONE = 4,
     DYING = 10,
     Pacman = {};
 
-Pacman.FPS = 30;
+Pacman.FPS = 60;
 
 Pacman.Ghost = function (game, map, colour) {
 
@@ -1054,9 +1054,11 @@ var PACMAN = (function () {
             "eatenPill": eatenPill
         }, map);
 
-        for (i = 0, len = ghostSpecs.length; i < len; i += 1) {
-            ghost = new Pacman.Ghost({"getTick": getTick}, map, ghostSpecs[i]);
-            ghosts.push(ghost);
+        if (mode !== "simple") {
+            for (i = 0, len = ghostSpecs.length; i < len; i += 1) {
+                ghost = new Pacman.Ghost({"getTick": getTick}, map, ghostSpecs[i]);
+                ghosts.push(ghost);
+            }
         }
 
         map.draw(ctx);
@@ -1181,11 +1183,11 @@ Pacman.PILL = 4;
 Pacman.MAP = NONE;
 
 function setMap(mode) {
-    if (mode === 'simple') {
+    if (mode === "simple") {
         Pacman.MAP = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0],
-            [0, 4, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 4, 0],
+            [0, 1, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 1, 0],
             [0, 2, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 2, 0],
             [0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0],
             [0, 2, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 2, 0],
@@ -1199,7 +1201,7 @@ function setMap(mode) {
             [0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0],
             [0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0],
             [0, 2, 0, 0, 2, 0, 0, 0, 2, 0, 2, 0, 0, 0, 2, 0, 0, 2, 0],
-            [0, 4, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 4, 0],
+            [0, 1, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 1, 0],
             [0, 0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 0, 0],
             [0, 2, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 2, 0],
             [0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0],
