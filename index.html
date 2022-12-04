@@ -2,33 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="utf-8"/>
+    <!--  browser tab title  -->
     <title>PacMan Game</title>
+    <!--  css style template  -->
     <link rel="stylesheet" href="static/style.css"/>
+    <!--  js functions  -->
     <script src="static/pacman.js"></script>
     <script src="static/modernizr.js"></script>
+    <!--  browser tab image  -->
+    <link rel="icon" type="image/x-icon" href="static/media/favicon.ico">
 </head>
 
 <body>
+    <h1>PacMan Game</h1>
 
-<h1>PacMan Game</h1>
+    <!--  pacman game interface  -->
+    <div id="pacman"></div>
 
-<div id="pacman"></div>
+    <script>
+        const el = document.getElementById("pacman");
 
-<script>
-    const el = document.getElementById("pacman");
-
-    if (Modernizr.canvas && Modernizr.localstorage &&
-        Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
-        window.setTimeout(function () {
-            const urlParams = new URLSearchParams(window.location.search);
-            const mode = urlParams.get('mode');
-            PACMAN.init(el, "./", mode);
-        }, 0);
-    } else {
-        el.innerHTML = "ERROR: Please try a different browser.<br>" +
-            "<small>(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
-    }
-</script>
-
+        if (Modernizr.canvas && Modernizr.localstorage &&
+            Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
+            window.setTimeout(function () {
+                const urlParams = new URLSearchParams(window.location.search);
+                const mode = urlParams.get('mode');
+                PACMAN.init(el, "./", mode);
+            }, 0);
+        } else {
+            el.innerHTML = "ERROR: Please try a different browser.<br>" +
+                "<small>(firefox 3.6+, Chrome 4+, Opera 10+ and Safari 4+)</small>";
+        }
+    </script>
 </body>
 </html>
