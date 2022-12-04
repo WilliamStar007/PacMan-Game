@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://github.com/WilliamStar007/PacMan-Game/blob/main/static/media/Pac-Man.svg" alt="Pac-Man" width="300">
+  <img src="static/media/Pac-Man.svg" alt="Pac-Man" width="300">
   <br>
   Pac-Man Game
   <br>
