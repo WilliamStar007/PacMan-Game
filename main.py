@@ -203,7 +203,7 @@ if __name__ == '__main__':
     time1=time.time()
     test_file_number = 3  # Change this to use different test files
     filename = 'game%d.txt' % test_file_number
-    testfilepath = os.path.join('test', 'singleTarget', filename)
+    testfilepath = os.path.join('test', filename)
     Solver = PacmanSolver()
     res,path,map = Solver.solve(testfilepath)
     #score=vis(path,map)
