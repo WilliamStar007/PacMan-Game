@@ -22,7 +22,9 @@
     if (Modernizr.canvas && Modernizr.localstorage &&
         Modernizr.audio && (Modernizr.audio.ogg || Modernizr.audio.mp3)) {
         window.setTimeout(function () {
-            PACMAN.init(el, "./", "simple");
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            PACMAN.init(el, "./", mode);
         }, 0);
     } else {
         el.innerHTML = "ERROR: Please try a different browser.<br>" +

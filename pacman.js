@@ -1043,7 +1043,7 @@ var PACMAN = (function () {
         }
     }
 
-    function init(wrapper, root, mode='normal') {
+    function init(wrapper, root, mode) {
         // set Pacman.MAP for the game
         if (mode === "simple") simpleMode();
 
