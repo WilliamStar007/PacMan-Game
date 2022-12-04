@@ -21,7 +21,7 @@ window.Modernizr = function (i, e, I) {
 
     function P() {
         j[E] = function (a) {
-            for (var b = 0, c = a.length; b < c; b++) J[a[b]] = (a[b] in n);
+            for (var b = 0, c = a.length; b < c; b++) J[a[b]] = !!(a[b] in n);
             return J
         }("autocomplete autofocus list placeholder max min multiple pattern required step".split(" "));
         j[Q] = function (a) {
@@ -29,7 +29,7 @@ window.Modernizr = function (i, e, I) {
                 n.setAttribute("type", a[b]);
                 if (c = n.type !== "text") {
                     n.value = K;
-                    /tel|search/.test(n.type) || (c = /url|email/.test(n.type) ? n.checkValidity && n.checkValidity() === false : n.value !== K)
+                    /tel|search/.test(n.type) || (c = /url|email/.test(n.type) ? n.checkValidity && n.checkValidity() === false : n.value != K)
                 }
                 L[a[b]] = !!c
             }
@@ -44,7 +44,7 @@ window.Modernizr = function (i, e, I) {
                 select: "input", change: "input", submit: "form", reset: "form", error: "img", load: "img", abort: "img"
             }, b = {};
             return function (c, h) {
-                var t = arguments.length === 1;
+                var t = arguments.length == 1;
                 if (t && b[c]) return b[c];
                 h = h || document.createElement(a[c] || "div");
                 c = "on" + c;
@@ -125,7 +125,8 @@ window.Modernizr = function (i, e, I) {
         return r("boxShadow")
     };
     d.opacity = function () {
-        m.cssText = y.join("opacity:.5;") + "";
+        var a = y.join("opacity:.5;") + "";
+        m.cssText = a;
         return ("" + m.opacity).indexOf("0.5") !== -1
     };
     d.cssanimations = function () {
@@ -143,8 +144,7 @@ window.Modernizr = function (i, e, I) {
         return r("boxReflect")
     };
     d.csstransforms = function () {
-        return !!C(["transformProperty",
-            "WebkitTransform", "MozTransform", "OTransform", "msTransform"])
+        return !!C(["transformProperty", "WebkitTransform", "MozTransform", "OTransform", "msTransform"])
     };
     d.csstransforms3d = function () {
         var a = !!C(["perspectiveProperty", "WebkitPerspective", "MozPerspective", "OPerspective", "msPerspective"]);
@@ -183,8 +183,7 @@ window.Modernizr = function (i, e, I) {
             var v = function () {
                 if (g.parentNode) {
                     a = j.fontface = h !== c.offsetWidth * c.offsetHeight;
-                    s.className = s.className.replace(/(no-)?fontface\b/, "") +
-                        (a ? " " : " no-") + "fontface"
+                    s.className = s.className.replace(/(no-)?fontface\b/, "") + (a ? " " : " no-") + "fontface"
                 }
             };
             setTimeout(v, 75);
@@ -207,7 +206,7 @@ window.Modernizr = function (i, e, I) {
     d.video = function () {
         var a = e.createElement("video"), b = !!a.canPlayType;
         if (b) {
-            b = new Boolean(b);
+            b = Boolean(b);
             b.ogg = a.canPlayType('video/ogg; codecs="theora"');
             b.h264 = a.canPlayType('video/mp4; codecs="avc1.42E01E"');
             b.webm = a.canPlayType('video/webm; codecs="vp8, vorbis"')
@@ -217,7 +216,7 @@ window.Modernizr = function (i, e, I) {
     d.audio = function () {
         var a = e.createElement("audio"), b = !!a.canPlayType;
         if (b) {
-            b = new Boolean(b);
+            b = Boolean(b);
             b.ogg = a.canPlayType('audio/ogg; codecs="vorbis"');
             b.mp3 = a.canPlayType("audio/mpeg;");
             b.wav = a.canPlayType('audio/wav; codecs="1"');
@@ -297,7 +296,7 @@ window.Modernizr = function (i, e, I) {
         a.attachEvent("onbeforeprint", function () {
             for (var f, k = b.getElementsByTagName("*"), l, q, x = new RegExp("^" + w + "$", "i"), B = -1; ++B < k.length;) if ((f = k[B]) && (q = f.nodeName.match(x))) {
                 l = new RegExp("^\\s*<" + q + "(.*)\\/" + q + ">\\s*$", "i");
-                g.innerHTML = f.outerHTML.replace(/\r|\n/g, " ").replace(l, f.currentStyle.display === "block" ? "<div$1/div>" : "<span$1/span>");
+                g.innerHTML = f.outerHTML.replace(/\r|\n/g, " ").replace(l, f.currentStyle.display == "block" ? "<div$1/div>" : "<span$1/span>");
                 l = g.childNodes[0];
                 l.className += " iepp_" + q;
                 l = p[p.length] = [f, l];
