@@ -1,10 +1,11 @@
 # Do not change the code framework - you could lose your grade
 # Project 1 - Q2
 # Name: Chenxi Dong
-
+import argparse
 import os
 import heapq
 import time
+
 from visualization import vis
 
 
@@ -41,29 +42,10 @@ class PacmanSolver:
             rawinput.append(line.strip())
         return rawinput
 
-    def heuristic(self, state, targets, dstLst):
+    def heuristic(self, state, targets):
         theMin=0
-        #w=2
-        points = dstLst[len(dstLst) - 1]
-        for target in points:
+        for target in targets:
             cur = abs(state.getPacman()[0] - target[0]) + abs(state.getPacman()[1] - target[1])
-        # for target in targets:
-        #     cur=abs(state.getPacman()[0]-target[0])+abs(state.getPacman()[1]-target[1])
-
-            #sameColTarget, sameColPacman, sameRowPacman, sameRowTarget=[],[],[],[]
-            # for i in range(shape[0]):
-            #     sameColTarget.append(str(i) + ',' + str(target[1]))
-            #     sameColPacman.append(str(i) + ',' + str(state.getPacman()[1]))
-            # for i in range(shape[1]):
-            #     sameRowPacman.append(str(state.getPacman()[0]) + ',' + str(i))
-            #     sameRowTarget.append(str(target[0])+','+str(i))
-            # sameColTarget=(str(i)+','+target[1] for i in range(shape[0]))
-            # sameRowTarget=(target[0]+','+str(i) for i in range(shape[1]))
-            # sameColPacman = (str(i) + ',' + state.getPacman()[1] for i in range(shape[0]))
-            # sameRowPacman = (state.getPacman()[0] + ',' + str(i) for i in range(shape[1]))
-            # for pos in map_dict:
-            #     if map_dict[pos]=='.' and pos not in sameRowTarget+sameRowPacman+sameColPacman+sameColTarget:
-            #         cur+=w
             if(cur<theMin):
                 theMin=cur
         return theMin
@@ -93,12 +75,12 @@ class PacmanSolver:
                     continue
 
         # print(points)
-        dstLst=[]
-        for i in range(len(points)):
-            for j in range(i,len(points)):
-                dstLst.append((abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1]), (points[i],points[j])))
-                dstLst.sort(key=lambda x:x[0])
-        print(len(dstLst))
+        # dstLst=[]
+        # for i in range(len(points)):
+        #     for j in range(i,len(points)):
+        #         dstLst.append((abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1]), (points[i],points[j])))
+        #         dstLst.sort(key=lambda x:x[0])
+        # print(len(dstLst))
         shape = [numRows, numCols]
         map_Dict[str(pacman[0]) + str(pacman[1])] = ' '
         # modify the original map dictionary
@@ -109,7 +91,7 @@ class PacmanSolver:
         visited = dict()
         initialState = self.state(pacman,targets,pacman, 0)
         visited[str(initialState.getPacman()[0])+','+str(initialState.getPacman()[1])]=initialState
-        aStarQueue = [(self.heuristic(initialState, targets, dstLst), initialState.getCost(), time, initialState)]
+        aStarQueue = [(self.heuristic(initialState, targets), initialState.getCost(), time, initialState)]
         heapq.heapify(aStarQueue)
         # we have several standards to compare for the heap:
         #	1. heuristic
@@ -186,11 +168,11 @@ class PacmanSolver:
                             return totalCost, path, finalMap
                     if reset:
                         nState = self.state(nextPacman, curTargets, nextPacman, 0)
-                        aStarQueue = [(self.heuristic(initialState, targets, dstLst), initialState.getCost(), time, initialState)]
+                        aStarQueue = [(self.heuristic(initialState, targets), initialState.getCost(), time, initialState)]
                         heapq.heapify(aStarQueue)
                     else:
                         nState = self.state(nextPacman, curTargets, curPacman, cost + 1)
-                        heapq.heappush(aStarQueue, (self.heuristic(nState, targets, dstLst) + nState.getCost(), nState.getCost(),
+                        heapq.heappush(aStarQueue, (self.heuristic(nState, targets) + nState.getCost(), nState.getCost(),
                                                 time, nState))
                     visited[str(nextPacman[0]) +',' +str(nextPacman[1])] = nState
                     time += 1
@@ -201,14 +183,17 @@ class PacmanSolver:
 
 if __name__ == '__main__':
     time1=time.time()
-    test_file_number = 3  # Change this to use different test files
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--t', type=float)
+    parser.add_argument('--f', type=int)
+    args = parser.parse_args()
+    test_file_number = args.f  # Change this to use different test files
     filename = 'game%d.txt' % test_file_number
-    testfilepath = os.path.join('test', filename)
+    testfilepath = os.path.join('test', 'singleTarget', filename)
     Solver = PacmanSolver()
     res,path,map = Solver.solve(testfilepath)
-    #score=vis(path,map)
+    score=vis(path,map, args.t)
     #print(path)
-    #print('Your score is %d' % (score))
+    print('Your final score is %d' % (score+4))
 
     #print('Your answer is %d' % (res))
-
