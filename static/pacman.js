@@ -1260,7 +1260,7 @@ function testMode(testMode) {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         ];
     }
-    else if (testMode === "full") {
+    else if (testMode === "test") {
         Pacman.WIN = 193;
         Pacman.MAP = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
