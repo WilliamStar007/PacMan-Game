@@ -1,11 +1,11 @@
 import os
 from time import sleep
 
-def vis(path, map):
+def vis(path, map,t):
     score=0
     for row in map:
         print(row)
-    sleep(0.001)
+    sleep(t)
     if (os.name == 'nt'):
         os.system('cls')
     else:
@@ -24,7 +24,7 @@ def vis(path, map):
         for row in map:
             print(row)
         print('Your score is %d' % (score))
-        sleep(0.001)
+        sleep(t)
         if(i!=len(path)-1):
             if (os.name == 'nt'):
                 os.system('cls')
