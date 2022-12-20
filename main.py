@@ -1,6 +1,4 @@
-# Do not change the code framework - you could lose your grade
-# Project 1 - Q2
-# Name: Chenxi Dong
+# PacMan Game Pathfinding w/ A* Search Algorithm
 
 import os
 import heapq
