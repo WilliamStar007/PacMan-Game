@@ -1,6 +1,3 @@
-# Do not change the code framework - you could lose your grade
-# Project 1 - Q2
-# Name: Chenxi Dong
 import argparse
 import os
 import heapq
