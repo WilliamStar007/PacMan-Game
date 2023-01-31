@@ -1,22 +1,18 @@
 import argparse
-import os
 import heapq
-import time
+import os
 
 from visualization import vis
 
 
-# You can use the heapq library in python standard libraries to implement priority queues.
-# Check the Python doc of heapq.heappop and heapq.heappush at https://docs.python.org/3/library/heapq.html
-
 class PacmanSolver:
-    class state:
+    class State:
         # the class object for state
         def __init__(self, pacman, targets, prev, cost):
+            # pacman position
             self.pacman = pacman
-            # the person's position
+            # dots positions
             self.targets = targets
-            # the box's position
             self.cost = cost
             self.prev = prev
 
@@ -32,165 +28,142 @@ class PacmanSolver:
         def getPrev(self):
             return self.prev
 
-    def __loadInput(self, filename):
-        f = open(filename, 'r')
-        rawinput = []
+    def __loadInput(self, file_name):
+        f = open(file_name, 'r')
+        raw_input = []
         for line in f.readlines():
-            rawinput.append(line.strip())
-        return rawinput
+            raw_input.append(line.strip())
+        return raw_input
 
     def heuristic(self, state, targets):
-        theMin=0
+        cost = 0
         for target in targets:
             cur = abs(state.getPacman()[0] - target[0]) + abs(state.getPacman()[1] - target[1])
-            if(cur<theMin):
-                theMin=cur
-        return theMin
+            if cur < cost:
+                cost = cur
+        return cost
 
-    def solve(self, inputFilename):
-        rawinput = self.__loadInput(inputFilename)
-        finalMap=rawinput
-        # for row in rawinput:
-        #     print(row)
-        numRows = len(rawinput)
-        numCols = len(rawinput[0])
-        map_Dict = dict()
-        points=[]
-        # copy the map into a hash map (dictionary)
-        targets=[]
-        for i in range(numRows):
-            for j in range(numCols):
-                if rawinput[i][j] == 'P':
+    def solve(self, input_filename):
+        raw_input = self.__loadInput(input_filename)
+        final_map = raw_input
+        num_rows = len(raw_input)
+        num_cols = len(raw_input[0])
+        map_dict = dict()
+        points = []
+        targets = []
+        for i in range(num_rows):
+            for j in range(num_cols):
+                if raw_input[i][j] == 'P':
                     pacman = [i, j]
-                    map_Dict[str(i) +','+str(j)] = 'P'
-                elif rawinput[i][j] == '.':
-                    points.append([i,j])
-                    map_Dict[str(i) + ','+ str(j)] = '.'
+                    map_dict[str(i) + ',' + str(j)] = 'P'
+                elif raw_input[i][j] == '.':
+                    points.append([i, j])
+                    map_dict[str(i) + ',' + str(j)] = '.'
                     targets.append([i, j])
                 else:
-                    map_Dict[str(i) + ',' + str(j)] = rawinput[i][j]
+                    map_dict[str(i) + ',' + str(j)] = raw_input[i][j]
                     continue
 
-        # print(points)
-        # dstLst=[]
-        # for i in range(len(points)):
-        #     for j in range(i,len(points)):
-        #         dstLst.append((abs(points[i][0]-points[j][0])+abs(points[i][1]-points[j][1]), (points[i],points[j])))
-        #         dstLst.sort(key=lambda x:x[0])
-        # print(len(dstLst))
-        shape = [numRows, numCols]
-        map_Dict[str(pacman[0]) + str(pacman[1])] = ' '
-        # modify the original map dictionary
-        # change it later according to current state
+        shape = [num_rows, num_cols]
+        map_dict[str(pacman[0]) + str(pacman[1])] = ' '
 
-
-        time = 1
+        steps = 1
         visited = dict()
-        initialState = self.state(pacman,targets,pacman, 0)
-        visited[str(initialState.getPacman()[0])+','+str(initialState.getPacman()[1])]=initialState
-        aStarQueue = [(self.heuristic(initialState, targets), initialState.getCost(), time, initialState)]
+        initial_state = self.State(pacman, targets, pacman, 0)
+        visited[str(initial_state.getPacman()[0]) + ',' + str(initial_state.getPacman()[1])] = initial_state
+        aStarQueue = [(self.heuristic(initial_state, targets), initial_state.getCost(), steps, initial_state)]
         heapq.heapify(aStarQueue)
-        # we have several standards to compare for the heap:
-        #	1. heuristic
-        #   2. the current state's cost
-        #	3. the current time spent on going to this state
-        # same comparison standard for the person's heap
-        totalCost=0
-        start=pacman
-        path=[]
-        reset=False
+
+        total_cost = 0
+        start = pacman
+        path = []
         while aStarQueue:
-            reset=False
-            cState = heapq.heappop(aStarQueue)[3]
-            cost = cState.getCost()
-            curTargets = cState.getTargets()
-            curPacman =cState.getPacman()
+            reset = False
+            cur_state = heapq.heappop(aStarQueue)[3]
+            cost = cur_state.getCost()
+            cur_targets = cur_state.getTargets()
+            cur_pacman = cur_state.getPacman()
             for i in range(4):
                 if i == 0:
-                    nextPacman = [curPacman[0], curPacman[1] + 1],
+                    next_pacman = [cur_pacman[0], cur_pacman[1] + 1],
                 elif i == 1:
-                    nextPacman = [curPacman[0], curPacman[1] - 1],
+                    next_pacman = [cur_pacman[0], cur_pacman[1] - 1],
                 elif i == 2:
-                    nextPacman = [curPacman[0]+1, curPacman[1]],
+                    next_pacman = [cur_pacman[0] + 1, cur_pacman[1]],
                 else:
-                    nextPacman = [curPacman[0]-1, curPacman[1]],
+                    next_pacman = [cur_pacman[0] - 1, cur_pacman[1]],
 
-                nextPacman=nextPacman[0]
-                if shape[0] > nextPacman[0] >= 0 and \
-                        shape[1] > nextPacman[1] >= 0 and \
-                        map_Dict[str(nextPacman[0]) +','+ str(nextPacman[1])] != '#' and \
-                        str(nextPacman[0]) + ','+ str(nextPacman[1])  not in visited.keys():
-                    if nextPacman in targets:
+                next_pacman = next_pacman[0]
+                if shape[0] > next_pacman[0] >= 0 and \
+                        shape[1] > next_pacman[1] >= 0 and \
+                        map_dict[str(next_pacman[0]) + ',' + str(next_pacman[1])] != '#' and \
+                        str(next_pacman[0]) + ',' + str(next_pacman[1]) not in visited.keys():
+                    if next_pacman in targets:
                         for target in targets:
-                            if nextPacman==target:
-                                foundStart=False
-                                prevPacman=curPacman
-                                tmp=[]
-                                while not foundStart:
-                                    if prevPacman==start:
-                                        foundStart=True
-                                    tmp.append(prevPacman)
-                                    if map_Dict[str(prevPacman[0])+','+str(prevPacman[1])]=='.':
-                                        map_Dict[str(prevPacman[0]) + ',' + str(prevPacman[1])]=' '
-                                    prevState=visited[str(prevPacman[0])+','+str(prevPacman[1])]
-                                    prevPacman=prevState.getPrev()
-                                path=path+tmp[::-1]
+                            if next_pacman == target:
+                                found_start = False
+                                prev_pacman = cur_pacman
+                                tmp = []
+                                while not found_start:
+                                    if prev_pacman == start:
+                                        found_start = True
+                                    tmp.append(prev_pacman)
+                                    if map_dict[str(prev_pacman[0]) + ',' + str(prev_pacman[1])] == '.':
+                                        map_dict[str(prev_pacman[0]) + ',' + str(prev_pacman[1])] = ' '
+                                    prev_state = visited[str(prev_pacman[0]) + ',' + str(prev_pacman[1])]
+                                    prev_pacman = prev_state.getPrev()
+                                path += tmp[::-1]
                                 targets.remove(target)
-                                start = nextPacman
-                                totalCost += cost+1
-                                cost=0
-                        visited=dict()
-                        reset=True
-                        initialState = self.state(start, targets, start, 0)
-                        visited[str(start[0]) + ',' + str(start[1])] = initialState
-                        if len(targets)==0:
-                            # print(path)
-                            ans = []
-                            for i in range(numRows):
-                                ans.append([])
-                            count=0
-                            for i in range(numRows):
-                                for j in range(numCols):
-                                    if[i,j] in path:
-                                        if rawinput[i][j] == '.':
+                                start = next_pacman
+                                total_cost += cost + 1
+                                cost = 0
+                        visited = dict()
+                        reset = True
+                        initial_state = self.State(start, targets, start, 0)
+                        visited[str(start[0]) + ',' + str(start[1])] = initial_state
+                        if len(targets) == 0:
+                            ans = [[] for _ in range(num_rows)]
+                            for i in range(num_rows):
+                                for j in range(num_cols):
+                                    if [i, j] in path:
+                                        if raw_input[i][j] == '.':
                                             ans[i].append('.')
-                                        elif rawinput[i][j] == 'P':
+                                        elif raw_input[i][j] == 'P':
                                             ans[i].append('P')
                                         else:
                                             ans[i].append('R')
                                     else:
-                                        ans[i].append(rawinput[i][j])
-                            # for row in ans:
-                            #     print(row)
-                            return totalCost, path, finalMap
+                                        ans[i].append(raw_input[i][j])
+                            return total_cost, path, final_map
                     if reset:
-                        nState = self.state(nextPacman, curTargets, nextPacman, 0)
-                        aStarQueue = [(self.heuristic(initialState, targets), initialState.getCost(), time, initialState)]
+                        new_state = self.State(next_pacman, cur_targets, next_pacman, 0)
+                        aStarQueue = [(self.heuristic(initial_state, targets),
+                                       initial_state.getCost(), steps, initial_state)]
                         heapq.heapify(aStarQueue)
                     else:
-                        nState = self.state(nextPacman, curTargets, curPacman, cost + 1)
-                        heapq.heappush(aStarQueue, (self.heuristic(nState, targets) + nState.getCost(), nState.getCost(),
-                                                time, nState))
-                    visited[str(nextPacman[0]) +',' +str(nextPacman[1])] = nState
-                    time += 1
+                        new_state = self.State(next_pacman, cur_targets, cur_pacman, cost + 1)
+                        heapq.heappush(aStarQueue, (self.heuristic(new_state, targets) +
+                                                    new_state.getCost(), new_state.getCost(),
+                                                    steps, new_state))
+                    visited[str(next_pacman[0]) + ',' + str(next_pacman[1])] = new_state
+                    steps += 1
+
                     if reset:
                         break
         return -1
 
 
 if __name__ == '__main__':
-    time1=time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('--t', type=float)
     parser.add_argument('--f', type=int)
     args = parser.parse_args()
-    test_file_number = args.f  # Change this to use different test files
-    filename = 'game%d.txt' % test_file_number
-    testfilepath = os.path.join('test', 'singleTarget', filename)
-    Solver = PacmanSolver()
-    res,path,map = Solver.solve(testfilepath)
-    score=vis(path,map, args.t)
-    #print(path)
-    print('Your final score is %d' % (score+4))
 
-    #print('Your answer is %d' % (res))
+    file_number = 2
+    sleep_time = 0
+    file_name = 'game%d.txt' % file_number
+    file_path = os.path.join('../test', file_name)
+    Solver = PacmanSolver()
+    res, path, maze = Solver.solve(file_path)
+    score = vis(path, maze, sleep_time)
+    print('Your final score is %d' % (score + 4))
