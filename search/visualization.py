@@ -2,33 +2,37 @@ import os
 from time import sleep
 
 
-def vis(path, map, t):
-    score = 0
-    for row in map:
-        print(row)
-    sleep(t)
-    if os.name == 'nt':
-        os.system('cls')
-    else:
-        os.system('clear')
+def vis(path, maze, delay):
+    # config terminal clear command
+    clear = 'cls' if os.name == 'nt' else 'clear'
 
-    for i in range(1, len(path)):
+    # initial maze
+    score = 0
+    for row in maze:
+        print(row)
+
+    for idx, coord in enumerate(path[1:], 1):
+        # delay between steps
+        sleep(delay)
+        os.system(clear)
+
+        # calculate score
         score -= 1
-        tmp1 = list(map[path[i][0]])
-        if tmp1[path[i][1]] == '.':
+        if maze[coord[0]][coord[1]] == '.':
             score += 5
-        tmp1[path[i][1]] = 'P'
-        map[path[i][0]] = "".join(tmp1)
-        tmp2 = list(map[path[i - 1][0]])
-        tmp2[path[i - 1][1]] = ' '
-        map[path[i - 1][0]] = "".join(tmp2)
-        for row in map:
+
+        # modify string for display
+        maze[path[idx - 1][0]] = maze[path[idx - 1][0]].replace('P', ' ')
+        maze[coord[0]] = maze[coord[0]][:coord[1]] + 'P' + maze[coord[0]][coord[1]+1:]
+
+        # display on terminal
+        for row in maze:
             print(row)
         print('Your score is %d' % score)
-        sleep(t)
-        if i != len(path) - 1:
-            if os.name == 'nt':
-                os.system('cls')
-            else:
-                os.system('clear')
-    return score
+
+    # print final score
+    sleep(delay)
+    os.system(clear)
+    for row in maze:
+        print(row.replace('P', ' ').replace('.', 'P'))
+    print('Your final score is %d' % (score + 4))
