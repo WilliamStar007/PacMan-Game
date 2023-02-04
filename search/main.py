@@ -158,7 +158,7 @@ if __name__ == '__main__':
     file_number = args.f if args.f is not None else 2
     sleep_time = args.t if args.t is not None else 0.01
     file_name = 'game%d.txt' % file_number
-    file_path = os.path.join('../test', file_name)
+    file_path = os.path.join('../tests', file_name)
 
     # runtime visualization
     final_cost, final_path, maze = PacmanSolver().solve(file_path)
