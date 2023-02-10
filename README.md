@@ -9,11 +9,11 @@
 
 ## Introduction
 Arcade PacMan Game deployed at https://williamstar.org/PacMan-Game  
-For pathfinding mode, use https://williamstar.org/PacMan-Game/?mode=test  
+
+This repository is adapted from [daleharvey/pacman](https://github.com/daleharvey/pacman).  
 Feel free to submite an [Issue](https://github.com/WilliamStar007/PacMan-Game/issues)
 or make a [Pull Request](https://github.com/WilliamStar007/PacMan-Game/issues)!
 
 ## Path Finding
+**Pathfinding mode: https://williamstar.org/PacMan-Game/?mode=test**
 
-
-This repository is adapted from [daleharvey/pacman](https://github.com/daleharvey/pacman)
