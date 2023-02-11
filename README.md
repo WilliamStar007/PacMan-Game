@@ -17,9 +17,9 @@ or make a [Pull Request](https://github.com/WilliamStar007/PacMan-Game/issues)!
 ## Path Finding
 **Pathfinding mode: https://williamstar.org/PacMan-Game/?mode=test**
 
-Windows (git bash)/Mac OS/Linux:
 ```bash
 git clone https://github.com/WilliamStar007/PacMan-Game.git
 cd PacMan-Game/search
+
 python main.py   # use python3 for MacOS/Linux
 ```
